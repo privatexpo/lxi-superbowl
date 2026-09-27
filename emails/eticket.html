@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Your e-tickets · LXI Super Ticket</title>
+  </head>
+  <body style="margin:0;padding:0;background:#0b0d12;font-family:Helvetica,Arial,sans-serif;">
+    <div id="mail-root"></div>
+    <script src="order-data.js"></script>
+    <script>
+      (function () {
+        const M = window.LXI_MAIL;
+        const order = M.getOrder();
+        const passes = M.ensurePasses(order);
+        const multi = passes.length > 1;
+
+        function ticketBlock(pass) {
+          const pal = M.palette(pass);
+          const title = M.shortTitle(pass);
+          const qr = M.qrSrc(pass.qrPayload || M.qrPayload(pass.code));
+          const barcode = pass.barcode || M.barcodeFromCode(pass.code);
+          return `
+            <tr><td style="height:12px;font-size:0;">&nbsp;</td></tr>
+            <tr>
+              <td>
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse:separate;border-radius:18px;overflow:hidden;border:1px solid ${pal.c1}88;">
+                  <tr>
+                    <td style="background:linear-gradient(160deg,${pal.c1} 0%,${pal.c2} 55%,#0b1a4a 100%);padding:20px 18px 16px;color:#fff;">
+                      <p style="margin:0 0 10px;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;opacity:0.85;">Ticket ${pass.passIndex} of ${pass.passTotal} · 1 person</p>
+                      <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
+                        <tr>
+                          <td align="center">
+                            <img src="${qr}" width="112" height="112" alt="QR ${pass.code}" style="display:block;border:0;width:112px;height:112px;background:#fff;padding:8px;border-radius:10px;" />
+                            <p style="margin:8px 0 12px;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;font-weight:700;">Scan here</p>
+                          </td>
+                        </tr>
+                      </table>
+                      <div style="border-top:1.5px dashed rgba(255,255,255,0.4);margin:0 0 12px;"></div>
+                      <p style="margin:0 0 4px;text-align:center;font-size:22px;font-weight:700;line-height:1.15;">${title}</p>
+                      <p style="margin:0 0 14px;text-align:center;font-size:13px;opacity:0.85;">${pass.venue || ""}</p>
+                      <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background:rgba(255,255,255,0.14);border-radius:12px;">
+                        <tr>
+                          <td width="50%" style="padding:12px;border-right:1px solid rgba(255,255,255,0.12);">
+                            <p style="margin:0 0 3px;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;opacity:0.75;">Sec</p>
+                            <p style="margin:0;font-size:14px;font-weight:700;">${pass.section}</p>
+                          </td>
+                          <td width="50%" style="padding:12px;">
+                            <p style="margin:0 0 3px;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;opacity:0.75;">Zone</p>
+                            <p style="margin:0;font-size:13px;font-weight:700;">${pass.zone || "Seat"}</p>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td width="50%" style="padding:0 12px 12px;border-right:1px solid rgba(255,255,255,0.12);">
+                            <p style="margin:0 0 3px;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;opacity:0.75;">Code</p>
+                            <p style="margin:0;font-size:13px;font-weight:700;">${pass.code}</p>
+                          </td>
+                          <td width="50%" style="padding:0 12px 12px;">
+                            <p style="margin:0 0 3px;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;opacity:0.75;">Barcode</p>
+                            <p style="margin:0;font-size:12px;font-weight:700;letter-spacing:0.04em;">${barcode}</p>
+                          </td>
+                        </tr>
+                      </table>
+                      <p style="margin:14px 0 0;font-size:13px;font-weight:700;">Name: ${pass.holder}<br /><span style="opacity:0.8;font-weight:600;">Unique ID: ${pass.code}</span></p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="background:#f7f4ee;padding:14px 16px;color:#111;">
+                      <p style="margin:0 0 4px;font-size:13px;font-weight:700;">${pass.title || title}</p>
+                      <p style="margin:0 0 10px;font-size:12px;color:#555;">${pass.holder}${pass.passOfGroup > 1 ? " · Side by side" : ""}</p>
+                      <div style="height:34px;background:#fff;border:1px solid #ddd;border-radius:4px;background-image:repeating-linear-gradient(90deg,#111 0 2px,transparent 2px 3px,#111 3px 5px,transparent 5px 7px,#111 7px 8px,transparent 8px 11px);background-size:100% 100%;margin-bottom:6px;" aria-hidden="true"></div>
+                      <p style="margin:0;text-align:center;font-size:11px;letter-spacing:0.16em;font-weight:700;color:#333;">${barcode.replace(/(\d{4})(?=\d)/g, "$1 ")}</p>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>`;
+        }
+
+        document.getElementById("mail-root").innerHTML = `
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background:#0b0d12;padding:28px 12px;">
+            <tr>
+              <td align="center">
+                <table role="presentation" width="600" cellspacing="0" cellpadding="0" style="width:600px;max-width:100%;">
+                  <tr>
+                    <td style="padding:8px 4px 16px;">
+                      <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
+                        <tr>
+                          <td valign="middle">
+                            <img src="../assets/brand/mark-trophy.png" width="26" alt="" style="display:inline-block;border:0;width:26px;height:auto;vertical-align:middle;" />
+                            <span style="display:inline-block;vertical-align:middle;padding-left:8px;font-size:14px;font-weight:700;color:#ffffff;">LXI Super Ticket</span>
+                          </td>
+                          <td align="right" style="font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#d4c4a0;">Email 2 of 2</td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="background:#141821;border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:20px 18px;color:#fff;">
+                      <p style="margin:0 0 6px;font-size:12px;font-weight:700;color:#6ee7b7;letter-spacing:0.08em;text-transform:uppercase;">E-tickets ready</p>
+                      <h1 style="margin:0 0 8px;font-size:24px;line-height:1.2;color:#ffffff;">Your tickets</h1>
+                      <p style="margin:0;font-size:14px;line-height:1.5;color:rgba(255,255,255,0.62);">
+                        Order <strong style="color:#d4c4a0;">${order.id}</strong> · ${passes.length} ticket${passes.length === 1 ? "" : "s"} · <strong style="color:#fff;">1 ticket = 1 person</strong><br />
+                        ${multi ? `Bought together → <strong style="color:#6ee7b7;">seats side by side</strong><br />` : ""}
+                        Each QR / barcode is unique to this ticket. Billing was sent in email 1.
+                      </p>
+                    </td>
+                  </tr>
+                  ${passes.map(ticketBlock).join("")}
+                  <tr><td style="height:18px;font-size:0;">&nbsp;</td></tr>
+                  <tr>
+                    <td style="padding:0 4px;font-size:12px;line-height:1.5;color:rgba(255,255,255,0.45);">
+                      Show each QR at the gate. Codes: ${passes.map((p) => p.code).join(", ")}.
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>`;
+        document.title = `E-tickets ${order.id} · LXI Super Ticket`;
+      })();
+    </script>
+  </body>
+</html>

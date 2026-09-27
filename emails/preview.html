@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>2 emails — Facturation &amp; E-billets</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #07090f;
+        --card: #10141c;
+        --line: rgb(255 255 255 / 0.1);
+        --text: #f4f0e8;
+        --muted: rgb(255 255 255 / 0.55);
+        --gold: #d4c4a0;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: Syne, system-ui, sans-serif;
+        background:
+          radial-gradient(circle at 15% 0%, rgb(255 122 24 / 0.1), transparent 40%),
+          var(--bg);
+        color: var(--text);
+        padding: 28px 18px 48px;
+      }
+      .wrap { max-width: 1240px; margin: 0 auto; }
+      h1 { margin: 0 0 6px; font-size: clamp(1.5rem, 3vw, 2rem); letter-spacing: -0.03em; }
+      .lead { margin: 0 0 22px; color: var(--muted); font-size: 14px; font-weight: 600; }
+      .steps {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin-bottom: 18px;
+      }
+      @media (max-width: 720px) { .steps { grid-template-columns: 1fr; } }
+      .step {
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 14px 16px;
+        background: rgb(255 255 255 / 0.03);
+      }
+      .step b {
+        display: block;
+        font-size: 11px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--gold);
+        margin-bottom: 6px;
+      }
+      .step span { font-size: 14px; font-weight: 700; }
+      .step p { margin: 6px 0 0; font-size: 12px; color: var(--muted); font-weight: 600; }
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+      }
+      @media (max-width: 960px) { .grid { grid-template-columns: 1fr; } }
+      .frame {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        min-height: 760px;
+      }
+      .frame-head {
+        display: flex; justify-content: space-between; align-items: center;
+        padding: 12px 14px; border-bottom: 1px solid var(--line);
+        font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 700;
+        color: var(--muted);
+      }
+      .frame-head a { color: var(--gold); text-decoration: none; letter-spacing: 0; text-transform: none; }
+      .frame iframe {
+        width: 100%;
+        flex: 1;
+        border: 0;
+        background: #0b0d12;
+        min-height: 720px;
+      }
+      .back { margin-top: 18px; }
+      .back a { color: var(--gold); font-weight: 700; text-decoration: none; font-size: 14px; }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <h1>Deux emails seulement</h1>
+      <p class="lead">Après paiement, le client reçoit exactement ces deux mails — rien d’autre. Codes / QR issus de la dernière commande (localStorage).</p>
+
+      <div class="steps">
+        <div class="step">
+          <b>Mail 1</b>
+          <span>Facturation</span>
+          <p>Reçu de paiement.</p>
+        </div>
+        <div class="step">
+          <b>Mail 2</b>
+          <span>E-billets HTML</span>
+          <p>1 billet = 1 personne · couleurs du match · côte à côte si plusieurs.</p>
+        </div>
+      </div>
+
+      <div class="grid">
+        <section class="frame">
+          <div class="frame-head">
+            <span>1 · Facturation</span>
+            <a href="invoice.html" target="_blank">Ouvrir</a>
+          </div>
+          <iframe src="invoice.html" title="Mail facturation"></iframe>
+        </section>
+        <section class="frame">
+          <div class="frame-head">
+            <span>2 · E-billets</span>
+            <a href="eticket.html" target="_blank">Ouvrir</a>
+          </div>
+          <iframe src="eticket.html" title="Mail e-billets"></iframe>
+        </section>
+      </div>
+
+      <p class="back"><a href="../">← Retour au site</a></p>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Billets par match — LXI Super Ticket</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --bg: #0a0b10;
+        --text: #f4f0e8;
+        --muted: rgb(255 255 255 / 0.55);
+        --gold: #d4c4a0;
+        --line: rgb(255 255 255 / 0.1);
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: Syne, system-ui, sans-serif;
+        color: var(--text);
+        background:
+          radial-gradient(circle at 18% 0%, rgb(80 120 255 / 0.16), transparent 42%),
+          radial-gradient(circle at 85% 100%, rgb(212 196 160 / 0.1), transparent 40%),
+          var(--bg);
+        padding: 28px 16px 56px;
+      }
+      .wrap { max-width: 1200px; margin: 0 auto; }
+      h1 { margin: 0 0 8px; font-size: clamp(1.45rem, 3vw, 2rem); }
+      .lead { margin: 0 0 18px; color: var(--muted); font-weight: 600; }
+      .nav { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 22px; }
+      .nav a {
+        color: var(--text); text-decoration: none; font-size: 13px; font-weight: 700;
+        padding: 9px 14px; border-radius: 999px; border: 1px solid var(--line);
+      }
+      .nav a:hover { border-color: rgb(255 255 255 / 0.28); }
+      .filters {
+        display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 22px;
+      }
+      .filters button {
+        appearance: none; cursor: pointer;
+        height: 36px; padding: 0 14px; border-radius: 999px;
+        border: 1px solid var(--line); background: transparent;
+        color: var(--muted); font: inherit; font-size: 12px; font-weight: 700;
+      }
+      .filters button.is-on {
+        color: #0c0c0c; background: var(--gold); border-color: var(--gold);
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+        gap: 18px;
+      }
+      .pticket {
+        position: relative;
+        border-radius: 22px;
+        overflow: hidden;
+        color: #fff;
+        isolation: isolate;
+        box-shadow: 0 22px 48px rgb(0 0 0 / 0.42);
+        border: 1px solid rgb(255 255 255 / 0.08);
+      }
+      .pticket-main { padding: 20px 18px 16px; position: relative; }
+      .pticket-qr {
+        width: 100px; height: 100px; background: #fff; border-radius: 10px;
+        padding: 7px; margin: 0 auto 8px; display: block;
+      }
+      .pticket-scan {
+        text-align: center; font-size: 10px; letter-spacing: 0.14em;
+        text-transform: uppercase; font-weight: 700; opacity: 0.9; margin-bottom: 12px;
+      }
+      .pticket-dash {
+        border: 0; border-top: 1.5px dashed rgb(255 255 255 / 0.42); margin: 0 0 12px;
+      }
+      .pticket h3 {
+        margin: 0 0 4px; font-size: 1.15rem; font-weight: 800;
+        letter-spacing: -0.02em; text-align: center; line-height: 1.2;
+      }
+      .pticket .event {
+        margin: 0 0 12px; text-align: center; font-size: 12px; opacity: 0.85; font-weight: 600;
+      }
+      .pticket .chip {
+        background: rgb(255 255 255 / 0.14);
+        border: 1px solid rgb(255 255 255 / 0.18);
+        border-radius: 12px;
+        padding: 11px;
+        margin-bottom: 12px;
+      }
+      .pticket .meta {
+        display: grid; grid-template-columns: 1fr 1fr; gap: 10px 12px;
+      }
+      .pticket .meta span {
+        display: block; font-size: 9px; letter-spacing: 0.1em;
+        text-transform: uppercase; opacity: 0.72; margin-bottom: 2px;
+      }
+      .pticket .meta strong { font-size: 13px; font-weight: 700; }
+      .pticket .who {
+        margin: 0; font-size: 12px; font-weight: 600; opacity: 0.92; line-height: 1.45;
+      }
+      .pticket .who em { font-style: normal; color: rgb(255 255 255 / 0.7); font-size: 11px; }
+      .pticket-stub {
+        background: #f7f4ee;
+        color: #1a1a1a;
+        padding: 14px 16px 12px;
+        position: relative;
+      }
+      .pticket-stub::before,
+      .pticket-stub::after {
+        content: "";
+        position: absolute;
+        top: -8px;
+        width: 16px; height: 16px;
+        border-radius: 50%;
+        background: var(--bg);
+      }
+      .pticket-stub::before { left: -8px; }
+      .pticket-stub::after { right: -8px; }
+      .pticket-stub .t { margin: 0 0 2px; font-size: 13px; font-weight: 800; }
+      .pticket-stub .e { margin: 0 0 10px; font-size: 11px; color: #555; font-weight: 600; }
+      .barcode {
+        height: 34px;
+        background:
+          repeating-linear-gradient(
+            90deg,
+            #111 0 2px,
+            transparent 2px 4px,
+            #111 4px 5px,
+            transparent 5px 8px,
+            #111 8px 9px,
+            transparent 9px 12px
+          );
+        opacity: 0.85;
+        margin-bottom: 6px;
+      }
+      .pticket-stub .code {
+        margin: 0; text-align: center; font-size: 10px; letter-spacing: 0.18em;
+        font-weight: 700; color: #444;
+      }
+      .empty {
+        grid-column: 1 / -1;
+        padding: 40px; text-align: center; color: var(--muted);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <h1>Billets — tous les matchs</h1>
+      <p class="lead">Couleurs home / away · codes / QR / barcodes uniques à chaque chargement</p>
+      <div class="nav">
+        <a href="preview.html">Mails</a>
+        <a href="eticket.html">E-billets Lions</a>
+        <a href="ticket-tests-v2.html">Tests design</a>
+        <a href="../">Site</a>
+      </div>
+      <div class="filters" id="filters" role="group" aria-label="Filter"></div>
+      <div class="grid" id="grid"></div>
+    </div>
+
+    <script src="../data.js?v=11"></script>
+    <script>
+      const TEAM_COLORS = {
+        ARI: { primary: "#97233f", secondary: "#000000" },
+        ATL: { primary: "#a71930", secondary: "#000000" },
+        BAL: { primary: "#241773", secondary: "#000000" },
+        BUF: { primary: "#00338d", secondary: "#c60c30" },
+        CAR: { primary: "#0085ca", secondary: "#101820" },
+        CHI: { primary: "#0b162a", secondary: "#c83803" },
+        CIN: { primary: "#fb4f14", secondary: "#000000" },
+        CLE: { primary: "#311d00", secondary: "#ff3c00" },
+        DAL: { primary: "#003594", secondary: "#869397" },
+        DEN: { primary: "#fb4f14", secondary: "#002244" },
+        DET: { primary: "#0076b6", secondary: "#b0b7bc" },
+        GB: { primary: "#203731", secondary: "#ffb612" },
+        HOU: { primary: "#03202f", secondary: "#a71930" },
+        IND: { primary: "#002c5f", secondary: "#a2aaad" },
+        JAX: { primary: "#006778", secondary: "#d7a22a" },
+        KC: { primary: "#e31837", secondary: "#ffb81c" },
+        LAC: { primary: "#0080c6", secondary: "#ffc20e" },
+        LAR: { primary: "#003594", secondary: "#ffa300" },
+        LV: { primary: "#000000", secondary: "#a5acaf" },
+        MIA: { primary: "#008e97", secondary: "#fc4c02" },
+        MIN: { primary: "#4f2683", secondary: "#ffc62f" },
+        NE: { primary: "#002244", secondary: "#c60c30" },
+        NO: { primary: "#101820", secondary: "#d3bc8d" },
+        NYG: { primary: "#0b2265", secondary: "#a71930" },
+        NYJ: { primary: "#125740", secondary: "#000000" },
+        PHI: { primary: "#004c54", secondary: "#a5acaf" },
+        PIT: { primary: "#101820", secondary: "#ffb612" },
+        SEA: { primary: "#002244", secondary: "#69be28" },
+        SF: { primary: "#aa0000", secondary: "#b3995d" },
+        TB: { primary: "#d50a0a", secondary: "#ff7900" },
+        TEN: { primary: "#0c2340", secondary: "#4b92db" },
+        WAS: { primary: "#5a1414", secondary: "#ffb612" },
+        BOWL: { primary: "#0b1f4a", secondary: "#d4c4a0" },
+        AFC: { primary: "#d50a0a", secondary: "#ffffff" },
+        NFC: { primary: "#013369", secondary: "#d4c4a0" },
+      };
+
+      const MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+
+      function color(code) {
+        return TEAM_COLORS[String(code || "").toUpperCase()] || { primary: "#1e3a8a", secondary: "#c4b5a0" };
+      }
+
+      function fmtDate(iso) {
+        const d = new Date(iso + "T12:00:00");
+        return `${MONTHS[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
+      }
+
+      function shortCity(g) {
+        return (g.location || g.city || "").split(",")[0];
+      }
+
+      function ticketHtml(g, i, gen) {
+        const isBowl = g.kind === "superbowl";
+        const home = color(isBowl ? "BOWL" : g.home);
+        const away = color(isBowl ? "NFC" : g.away);
+        const c1 = home.primary;
+        const c2 = isBowl ? home.secondary : away.primary;
+        const c3 = home.secondary;
+        const title = isBowl ? "Super Bowl LXI" : `${g.awayName.split(" ").pop()} at ${g.homeName.split(" ").pop()}`;
+        const full = isBowl ? "Super Bowl LXI" : `${g.awayName} at ${g.homeName}`;
+        const venue = g.venue;
+        const place = shortCity(g);
+        const sec = isBowl ? "214" : String(110 + (i % 8) * 4);
+        const view = ["Midfield", "Corner", "End zone"][i % 3];
+        const cat = isBowl ? "Club" : ["Lower", "Club", "Upper"][i % 3];
+        const orderId = gen.orderId;
+        const code = `${orderId}-${String.fromCharCode(65 + (i % 26))}`;
+        let h = 2166136261;
+        for (let k = 0; k < code.length; k++) {
+          h ^= code.charCodeAt(k);
+          h = Math.imul(h, 16777619);
+        }
+        const barcode = String((h >>> 0) % 1e12).padStart(12, "0");
+        const qr = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&ecc=M&margin=8&data=${encodeURIComponent("LXI-TICKET:" + code)}`;
+        const bg = `linear-gradient(160deg, ${c1} 0%, ${c2} 52%, ${c3 === "#000000" ? "#111827" : c3} 100%)`;
+
+        return `
+          <article class="pticket" style="background:${bg}" data-type="${isBowl ? "bowl" : (g.type || "nfl")}">
+            <div class="pticket-main">
+              <img class="pticket-qr" src="${qr}" alt="QR ${code}" />
+              <p class="pticket-scan">Scan here · 1 person</p>
+              <hr class="pticket-dash" />
+              <h3>${title}</h3>
+              <p class="event">${venue} · ${place}</p>
+              <div class="chip">
+                <div class="meta">
+                  <div><span>Date</span><strong>${fmtDate(g.date)}</strong></div>
+                  <div><span>Sec</span><strong>${sec}</strong></div>
+                  <div><span>Code</span><strong>${code}</strong></div>
+                  <div><span>Barcode</span><strong>${barcode.slice(0, 8)}…</strong></div>
+                </div>
+              </div>
+              <p class="who">Name: Alex Martin<br /><em>Unique: ${code}</em></p>
+            </div>
+            <div class="pticket-stub">
+              <p class="t">${full}</p>
+              <p class="e">Alex Martin · ${view} · ${cat}</p>
+              <div class="barcode" aria-hidden="true"></div>
+              <p class="code">${barcode.replace(/(\d{4})(?=\d)/g, "$1 ")}</p>
+            </div>
+          </article>`;
+      }
+
+      const data = window.SB || {};
+      const games = [...(data.featured || [])];
+      if (data.bowl) games.push(data.bowl);
+
+      const filters = document.getElementById("filters");
+      const grid = document.getElementById("grid");
+      const types = ["all", ...new Set(games.map((g) => (g.kind === "superbowl" ? "bowl" : g.type || "nfl")))];
+
+      let active = "all";
+      const gen = {
+        orderId: `LXI-${Date.now().toString(36).toUpperCase()}${Math.random().toString(36).slice(2, 6).toUpperCase()}`.replace(/[^A-Z0-9-]/g, "").slice(0, 14),
+      };
+
+      function render() {
+        filters.innerHTML = types
+          .map((t) => {
+            const label = t === "all" ? "All" : t === "bowl" ? "Super Bowl" : t;
+            return `<button type="button" data-type="${t}" class="${active === t ? "is-on" : ""}">${label}</button>`;
+          })
+          .join("");
+
+        const list = games.filter((g) => {
+          if (active === "all") return true;
+          if (active === "bowl") return g.kind === "superbowl";
+          return (g.type || "nfl") === active;
+        });
+
+        grid.innerHTML = list.length
+          ? list.map((g, i) => ticketHtml(g, i, gen)).join("")
+          : `<div class="empty">No tickets</div>`;
+      }
+
+      filters.addEventListener("click", (e) => {
+        const btn = e.target.closest("button[data-type]");
+        if (!btn) return;
+        active = btn.getAttribute("data-type");
+        render();
+      });
+
+      render();
+    </script>
+  </body>
+</html>

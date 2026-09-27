@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Tests tickets v2 — style référence</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --bg: #0a0b10;
+        --text: #f4f0e8;
+        --muted: rgb(255 255 255 / 0.55);
+        --gold: #d4c4a0;
+        --line: rgb(255 255 255 / 0.1);
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: Syne, system-ui, sans-serif;
+        color: var(--text);
+        background:
+          radial-gradient(circle at 20% 0%, rgb(120 80 255 / 0.18), transparent 40%),
+          radial-gradient(circle at 80% 100%, rgb(255 80 160 / 0.12), transparent 40%),
+          var(--bg);
+        padding: 32px 18px 56px;
+      }
+      .wrap { max-width: 1100px; margin: 0 auto; }
+      h1 { margin: 0 0 8px; font-size: clamp(1.5rem, 3vw, 2rem); }
+      .lead { margin: 0 0 10px; color: var(--muted); font-weight: 600; }
+      .note {
+        margin: 0 0 22px; padding: 12px 14px; border-radius: 12px;
+        border: 1px solid var(--line); background: rgb(255 255 255 / 0.04);
+        font-size: 13px; color: var(--muted); font-weight: 600;
+      }
+      .note b { color: var(--gold); }
+      .nav { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
+      .nav a {
+        color: var(--text); text-decoration: none; font-size: 13px; font-weight: 700;
+        padding: 9px 14px; border-radius: 999px; border: 1px solid var(--line);
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 18px;
+        margin-bottom: 36px;
+      }
+      .card {
+        background: #10131b;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        overflow: hidden;
+      }
+      .card-head {
+        padding: 10px 12px; border-bottom: 1px solid var(--line);
+        font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+        font-weight: 700; color: var(--muted);
+        display: flex; justify-content: space-between;
+      }
+      .card img { display: block; width: 100%; height: auto; background: #000; }
+      .html-block { margin-top: 8px; }
+      .tickets {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 20px;
+      }
+
+      /* HTML CSS recreation of reference shape */
+      .pticket {
+        position: relative;
+        border-radius: 22px;
+        overflow: hidden;
+        color: #fff;
+        isolation: isolate;
+        box-shadow: 0 24px 50px rgb(0 0 0 / 0.4);
+      }
+      .pticket--blue {
+        background:
+          radial-gradient(circle at 20% 15%, #6ecbff, transparent 40%),
+          radial-gradient(circle at 80% 40%, #5b2bff, transparent 45%),
+          linear-gradient(160deg, #1a1460, #2f1bb0 45%, #0d2a8a);
+      }
+      .pticket--pink {
+        background:
+          radial-gradient(circle at 15% 20%, #ff9ad5, transparent 42%),
+          radial-gradient(circle at 85% 30%, #a855f7, transparent 40%),
+          linear-gradient(160deg, #c0267a, #7c3aed 50%, #db2777);
+      }
+      .pticket--gold {
+        background:
+          radial-gradient(circle at 20% 10%, #ffe2a8, transparent 35%),
+          radial-gradient(circle at 80% 35%, #3b82f6, transparent 42%),
+          linear-gradient(165deg, #0b1220, #172554 50%, #0f172a);
+      }
+      .pticket-main { padding: 22px 20px 18px; position: relative; }
+      .pticket-qr {
+        width: 108px; height: 108px; background: #fff; border-radius: 10px;
+        padding: 8px; margin: 0 auto 8px; display: block;
+      }
+      .pticket-scan {
+        text-align: center; font-size: 10px; letter-spacing: 0.14em;
+        text-transform: uppercase; font-weight: 700; opacity: 0.9; margin-bottom: 14px;
+      }
+      .pticket-dash {
+        border: 0; border-top: 1.5px dashed rgb(255 255 255 / 0.45); margin: 0 0 14px;
+      }
+      .pticket h3 {
+        margin: 0 0 4px; font-size: 22px; font-weight: 800; letter-spacing: -0.02em; text-align: center;
+      }
+      .pticket .event {
+        margin: 0 0 14px; text-align: center; font-size: 13px; opacity: 0.85; font-weight: 600;
+      }
+      .pticket .chip {
+        background: rgb(255 255 255 / 0.16);
+        border: 1px solid rgb(255 255 255 / 0.22);
+        border-radius: 12px;
+        padding: 12px;
+        margin-bottom: 14px;
+      }
+      .pticket .meta {
+        display: grid; grid-template-columns: 1fr 1fr; gap: 8px 12px; font-size: 11px;
+      }
+      .pticket .meta span { opacity: 0.7; display: block; letter-spacing: 0.06em; text-transform: uppercase; font-size: 9px; }
+      .pticket .meta strong { font-size: 14px; font-weight: 800; }
+      .pticket .who { font-size: 12px; font-weight: 700; letter-spacing: 0.04em; }
+      .pticket .who em { font-style: normal; opacity: 0.75; font-weight: 600; }
+      .pticket-stub {
+        position: relative;
+        background: linear-gradient(180deg, #f3f4f6, #e5e7eb);
+        color: #312e81;
+        padding: 22px 18px 16px;
+        text-align: center;
+      }
+      .pticket-stub::before,
+      .pticket-stub::after {
+        content: "";
+        position: absolute;
+        top: -12px;
+        width: 24px; height: 24px;
+        border-radius: 50%;
+        background: var(--bg);
+      }
+      .pticket-stub::before { left: -12px; }
+      .pticket-stub::after { right: -12px; }
+      .pticket-stub .t { margin: 0; font-size: 15px; font-weight: 800; }
+      .pticket-stub .e { margin: 2px 0 10px; font-size: 12px; font-weight: 600; opacity: 0.75; }
+      .barcode {
+        height: 42px;
+        background:
+          repeating-linear-gradient(90deg,
+            #111 0 2px, transparent 2px 4px,
+            #111 4px 5px, transparent 5px 8px,
+            #111 8px 11px, transparent 11px 13px);
+        margin: 0 auto 6px;
+        max-width: 200px;
+        border-radius: 2px;
+      }
+      .pticket-stub .code { margin: 0; font-size: 11px; letter-spacing: 0.18em; font-weight: 700; }
+      .pticket--pink .pticket-stub { color: #9d174d; }
+      .pticket--gold .pticket-stub { color: #92400e; }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <h1>Tests design — style image</h1>
+      <p class="lead">Référence verticale + encoches + stub barcode. Les mails marketplace sont déjà sauvegardés.</p>
+      <p class="note">
+        <b>Sauvegardé :</b> <code>emails/backup-marketplace-20260914/</code> (facture + e-billets actuels).<br />
+        Dis-moi lequel tu veux brancher dans le mail 2 (A bleu / B rose / C gold / ou HTML).
+      </p>
+      <div class="nav">
+        <a href="tickets-gallery.html">Tous les matchs</a>
+        <a href="preview.html">Mails actuels</a>
+        <a href="eticket.html">E-billets live</a>
+        <a href="invoice.html">Facture live</a>
+        <a href="../">Site</a>
+      </div>
+
+      <div class="grid">
+        <article class="card">
+          <div class="card-head"><span>Référence</span><span>Ton image</span></div>
+          <img src="../assets/tickets/v2/reference-ticket-style.png" alt="Reference style" />
+        </article>
+        <article class="card">
+          <div class="card-head"><span>A · Bleu</span><span>Lions @ Bills</span></div>
+          <img src="../assets/tickets/v2/ticket-v2-lions-blue.png" alt="Ticket blue" />
+        </article>
+        <article class="card">
+          <div class="card-head"><span>B · Rose VIP</span><span>Lions @ Bills</span></div>
+          <img src="../assets/tickets/v2/ticket-v2-lions-pink.png" alt="Ticket pink" />
+        </article>
+        <article class="card">
+          <div class="card-head"><span>C · Gold</span><span>Super Bowl LXI</span></div>
+          <img src="../assets/tickets/v2/ticket-v2-superbowl-gold.png" alt="Ticket gold" />
+        </article>
+      </div>
+
+      <h2 style="margin:0 0 14px;font-size:14px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);">HTML live (même forme)</h2>
+      <div class="tickets html-block">
+        <article class="pticket pticket--blue">
+          <div class="pticket-main">
+            <img class="pticket-qr" src="../assets/brand/qr-sample.png" alt="QR" />
+            <p class="pticket-scan">Scan here</p>
+            <hr class="pticket-dash" />
+            <h3>Lions at Bills</h3>
+            <p class="event">Highmark Stadium · Orchard Park</p>
+            <div class="chip">
+              <div class="meta">
+                <div><span>Date</span><strong>Sep 13, 2026</strong></div>
+                <div><span>Sec</span><strong>118</strong></div>
+                <div><span>Category</span><strong>Lower</strong></div>
+                <div><span>Gate</span><strong>A</strong></div>
+              </div>
+            </div>
+            <p class="who">Name: Alex Martin<br /><em>Code: LXI-10482-A</em></p>
+          </div>
+          <div class="pticket-stub">
+            <p class="t">Lions at Bills</p>
+            <p class="e">Alex Martin · Side by side</p>
+            <div class="barcode" aria-hidden="true"></div>
+            <p class="code">0 1 0 4 8 2 A</p>
+          </div>
+        </article>
+
+        <article class="pticket pticket--pink">
+          <div class="pticket-main">
+            <img class="pticket-qr" src="../assets/brand/qr-sample.png" alt="QR" />
+            <p class="pticket-scan">Scan here · VIP</p>
+            <hr class="pticket-dash" />
+            <h3>Lions at Bills</h3>
+            <p class="event">Highmark Stadium · Orchard Park</p>
+            <div class="chip">
+              <div class="meta">
+                <div><span>Date</span><strong>Sep 13, 2026</strong></div>
+                <div><span>Sec</span><strong>118</strong></div>
+                <div><span>Category</span><strong>Lower</strong></div>
+                <div><span>Valid</span><strong>1 person</strong></div>
+              </div>
+            </div>
+            <p class="who">Name: Guest<br /><em>Code: LXI-10482-B</em></p>
+          </div>
+          <div class="pticket-stub">
+            <p class="t">Lions at Bills</p>
+            <p class="e">Guest · Side by side</p>
+            <div class="barcode" aria-hidden="true"></div>
+            <p class="code">0 1 0 4 8 2 B</p>
+          </div>
+        </article>
+
+        <article class="pticket pticket--gold">
+          <div class="pticket-main">
+            <img class="pticket-qr" src="../assets/brand/qr-sample.png" alt="QR" />
+            <p class="pticket-scan">Scan here</p>
+            <hr class="pticket-dash" />
+            <h3>Super Bowl LXI</h3>
+            <p class="event">SoFi Stadium · Feb 14, 2027</p>
+            <div class="chip">
+              <div class="meta">
+                <div><span>Date</span><strong>Feb 14, 2027</strong></div>
+                <div><span>Sec</span><strong>Club</strong></div>
+                <div><span>Category</span><strong>Midfield</strong></div>
+                <div><span>Seats</span><strong>Together</strong></div>
+              </div>
+            </div>
+            <p class="who">Name: Alex Martin<br /><em>Code: LXI-SB-001</em></p>
+          </div>
+          <div class="pticket-stub">
+            <p class="t">Super Bowl LXI</p>
+            <p class="e">Alex Martin · Side by side</p>
+            <div class="barcode" aria-hidden="true"></div>
+            <p class="code">L X I S B 0 0 1</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </body>
+</html>
