@@ -1,0 +1,19 @@
+{
+  "name": "lxi-superbowl",
+  "version": "1.0.0",
+  "private": true,
+  "description": "LXI Super Ticket — static Super Bowl LXI ticketing front",
+  "scripts": {
+    "dev": "serve . -l 8765 --no-clipboard",
+    "start": "serve . -l 8765 --no-clipboard",
+    "import:matches": "node scripts/import-matches-to-wordpress.mjs --apply",
+    "import:matches:dry": "node scripts/import-matches-to-wordpress.mjs --dry-run",
+    "export:matches": "node scripts/export-matches-json.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "serve": "^14.2.4"
+  }
+}
