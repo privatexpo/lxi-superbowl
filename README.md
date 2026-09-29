@@ -1,22 +1,16 @@
-# LXI Super Ticket
+# LXI Super Ticket (Next.js)
 
-Site statique Super Bowl LXI (HTML / CSS / JS).  
-Prod Vercel : https://lxi-superbowl.vercel.app
+Site billetterie Super Bowl LXI. Déployé sur Vercel depuis GitHub.
 
-## Structure
+- Prod : https://lxi-superbowl.vercel.app  
+- Repo : https://github.com/privatexpo/lxi-superbowl
 
-```
-index.html      # page principale
-app.js          # panier, checkout démo, routing
-data.js         # matchs + Super Bowl
-stadiums.js     # plans / sections
-styles.css
-assets/         # images, posters, vidéos
-emails/         # aperçus facture / e-tickets
-scripts/        # import WooCommerce des matchs
-```
+## Stack
 
-Le dossier `web/` est un ancien scaffold Next.js **non utilisé** (ignoré par git).
+- **Next.js 16** (App Router)
+- Front actuel : HTML + `public/app.js` (SPA hash-routing)
+- Assets dans `public/`
+- Markup page dans `content/home-body.html`
 
 ## Local
 
@@ -25,7 +19,16 @@ npm install
 npm run dev
 ```
 
-Ouvre http://localhost:8765
+→ http://localhost:3000
+
+## Structure
+
+```
+app/                 # Next.js (layout + page)
+content/             # corps HTML de la home
+public/              # assets, styles.css, app.js, data.js, emails/
+scripts/             # import matchs WooCommerce
+```
 
 ## Env
 
@@ -33,18 +36,13 @@ Ouvre http://localhost:8765
 cp .env.local.example .env.local
 ```
 
-Variables utiles : `WC_URL`, `WC_CONSUMER_*`, `WC_PAYMENT_METHOD=pay50`,  
-`PAYMENT_FRONT_URL` / `PAYMENT_FRONT_PATH=lxi` (checkout sur payhubticket).
+Checkout Pay50 : `PAYMENT_FRONT_URL` + `PAYMENT_FRONT_PATH=lxi`.
 
-## Import matchs → WordPress
+## Deploy Vercel (via Git)
 
-```bash
-npm run import:matches:dry
-npm run import:matches
-```
+1. Vercel → Add New Project → importer `privatexpo/lxi-superbowl`
+2. Framework : **Next.js** (auto)
+3. Root Directory : `.`
+4. Deploy
 
-## Deploy
-
-```bash
-npx vercel --prod
-```
+À chaque `git push` sur `main`, Vercel rebuild.

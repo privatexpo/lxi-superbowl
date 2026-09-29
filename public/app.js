@@ -64,7 +64,7 @@
       zone: "Early access · Upper",
       price: 2400,
       maxQty: 6,
-      image: "assets/bowl/pkg-early.jpg?v=2",
+      image: "/assets/bowl/pkg-early.jpg?v=2",
       accent: "#2ee6c5",
     },
     {
@@ -84,7 +84,7 @@
       zone: "Insured event pass",
       price: 2750,
       maxQty: 6,
-      image: "assets/bowl/pkg-insured.jpg?v=2",
+      image: "/assets/bowl/pkg-insured.jpg?v=2",
       accent: "#ffc857",
       featured: true,
     },
@@ -106,9 +106,9 @@
       zone: "Club · Intermediate",
       price: 4925,
       maxQty: 6,
-      image: "assets/bowl/pkg-club.jpg?v=2",
-      video: "assets/bowl/pkg-club-mobile.mp4",
-      partnerLogo: "assets/brand/on-location.png",
+      image: "/assets/bowl/pkg-club.jpg?v=2",
+      video: "/assets/bowl/pkg-club-mobile.mp4",
+      partnerLogo: "/assets/brand/on-location.png",
       accent: "#ff7a45",
       contactOnly: true,
     },
@@ -133,7 +133,7 @@
       priceLabel: "Starting at",
       cta: "view",
       ctaLabel: "View Package",
-      image: "assets/bowl/hosp-touchdown.jpg?v=2",
+      image: "/assets/bowl/hosp-touchdown.jpg?v=2",
       plans: true,
     },
     {
@@ -154,7 +154,7 @@
       priceLabel: "Starting at",
       cta: "view",
       ctaLabel: "View Package",
-      image: "assets/bowl/hosp-champions-premier.jpg?v=2",
+      image: "/assets/bowl/hosp-champions-premier.jpg?v=2",
       plans: true,
     },
     {
@@ -173,7 +173,7 @@
       cta: "call",
       ctaLabel: "Call 888-408-8715",
       ctaHref: "tel:8884088715",
-      image: "assets/bowl/hosp-club67.jpg?v=2",
+      image: "/assets/bowl/hosp-club67.jpg?v=2",
       plans: true,
     },
     {
@@ -194,7 +194,7 @@
       cta: "call",
       ctaLabel: "Call 888-408-8715",
       ctaHref: "tel:8884088715",
-      image: "assets/bowl/hosp-on-the-fifty.jpg?v=2",
+      image: "/assets/bowl/hosp-on-the-fifty.jpg?v=2",
       plans: true,
     },
     {
@@ -207,7 +207,7 @@
       price: null,
       cta: "sold",
       ctaLabel: "Sold Out",
-      image: "assets/bowl/hosp-champions-club.jpg?v=2",
+      image: "/assets/bowl/hosp-champions-club.jpg?v=2",
       plans: false,
       soldOut: true,
       soldNote: "This item has been sold out and is no longer available",
@@ -219,19 +219,19 @@
   const HOLD_MS = 10 * 60 * 1000;
   const CART_EVENT = "lxi-cart-update";
   const VENUE_PHOTOS = {
-    highmark: "assets/venues/highmark.jpg",
-    lambeau: "assets/venues/lambeau.jpg",
-    paris: "assets/venues/paris.jpg",
-    att: "assets/venues/att.jpg",
-    soldier: "assets/venues/soldier.jpg",
-    lumen: "assets/venues/lumen.jpg",
-    azteca: "assets/venues/azteca.jpg",
-    bernabeu: "assets/venues/bernabeu.jpg",
-    allianz: "assets/venues/allianz.jpg",
-    sofi: "assets/venues/sofi.jpg",
-    empower: "assets/venues/empower.jpg",
-    wembley: "assets/venues/wembley.jpg",
-    allegiant: "assets/venues/allegiant.jpg",
+    highmark: "/assets/venues/highmark.jpg",
+    lambeau: "/assets/venues/lambeau.jpg",
+    paris: "/assets/venues/paris.jpg",
+    att: "/assets/venues/att.jpg",
+    soldier: "/assets/venues/soldier.jpg",
+    lumen: "/assets/venues/lumen.jpg",
+    azteca: "/assets/venues/azteca.jpg",
+    bernabeu: "/assets/venues/bernabeu.jpg",
+    allianz: "/assets/venues/allianz.jpg",
+    sofi: "/assets/venues/sofi.jpg",
+    empower: "/assets/venues/empower.jpg",
+    wembley: "/assets/venues/wembley.jpg",
+    allegiant: "/assets/venues/allegiant.jpg",
   };
   const COUNTRIES = [
     ["US", "United States"],
@@ -763,13 +763,13 @@
     if (item.kind === "superbowl") {
       const offer = BOWL_OFFERS.find((o) => o.id === item.id || o.id === item.category);
       if (offer && offer.image) return offer.image;
-      return "assets/venues/sofi.jpg";
+      return "/assets/venues/sofi.jpg";
     }
     const game = cartGame(item);
     if (game && game.stadium && VENUE_PHOTOS[game.stadium]) return VENUE_PHOTOS[game.stadium];
     if (item.image && String(item.image).includes("/venues/")) return item.image;
     if (item.slug && VENUE_PHOTOS[item.slug]) return VENUE_PHOTOS[item.slug];
-    return "assets/venues/sofi.jpg";
+    return "/assets/venues/sofi.jpg";
   }
 
   function cartTitleHtml(item) {
@@ -778,7 +778,7 @@
       return `
         <div class="pn-matchup pn-matchup--bowl">
           <span class="pn-bowl-mark" aria-hidden="true">
-            <img src="assets/brand/mark-trophy.png?v=137" alt="" width="28" height="32" />
+            <img src="/assets/brand/mark-trophy.png?v=137" alt="" width="28" height="32" />
           </span>
           <strong class="pn-bowl-title">${item.title.replace(/^[^·]+·\s*/, "") || item.title}</strong>
         </div>`;
@@ -2209,7 +2209,7 @@
         awayName: game.awayName,
         homeName: game.homeName,
         category: listingCategory(row),
-        image: VENUE_PHOTOS[game.stadium] || "assets/venues/sofi.jpg",
+        image: VENUE_PHOTOS[game.stadium] || "/assets/venues/sofi.jpg",
       });
       state.addingId = row.id;
       state.cartExpired = false;

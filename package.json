@@ -2,10 +2,12 @@
   "name": "lxi-superbowl",
   "version": "1.0.0",
   "private": true,
-  "description": "LXI Super Ticket — static Super Bowl LXI ticketing front",
+  "description": "LXI Super Ticket — Super Bowl LXI ticketing (Next.js)",
   "scripts": {
-    "dev": "serve . -l 8765 --no-clipboard",
-    "start": "serve . -l 8765 --no-clipboard",
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint .",
     "import:matches": "node scripts/import-matches-to-wordpress.mjs --apply",
     "import:matches:dry": "node scripts/import-matches-to-wordpress.mjs --dry-run",
     "export:matches": "node scripts/export-matches-json.mjs"
@@ -13,7 +15,17 @@
   "engines": {
     "node": ">=20"
   },
+  "dependencies": {
+    "next": "16.3.5",
+    "react": "19.2.8",
+    "react-dom": "19.2.8"
+  },
   "devDependencies": {
-    "serve": "^14.2.4"
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.3.5",
+    "typescript": "^5"
   }
 }
