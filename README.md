@@ -36,7 +36,7 @@ scripts/             # import matchs WooCommerce
 cp .env.local.example .env.local
 ```
 
-Checkout Pay50 : `PAYMENT_FRONT_URL` + `PAYMENT_FRONT_PATH=lxi`.
+WooCommerce : `WC_URL`, `WC_CONSUMER_KEY`, `WC_CONSUMER_SECRET`. Pas de passerelle de paiement pour l’instant.
 
 ## Deploy Vercel (via Git)
 

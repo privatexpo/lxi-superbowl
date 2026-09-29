@@ -9,7 +9,7 @@ import { fileURLToPath } from "node:url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, "..");
-const src = readFileSync(resolve(ROOT, "data.js"), "utf8");
+const src = readFileSync(resolve(ROOT, "public/data.js"), "utf8");
 const window = {};
 new Function("window", src)(window);
 const SB = window.SB;

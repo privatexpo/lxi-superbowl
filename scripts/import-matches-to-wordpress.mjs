@@ -12,9 +12,9 @@
  *   node scripts/import-matches-to-wordpress.mjs --apply --only=lions-bills,super-bowl-lxi
  *   node scripts/import-matches-to-wordpress.mjs --apply --update
  *
- * Sortie : scripts/woocommerce-match-ids.env (WC_MATCH_IDS=…)
+ * Les produits sont gérés dans WordPress (pas de WC_MATCH_IDS).
  */
-import { readFileSync, writeFileSync, existsSync } from "node:fs";
+import { readFileSync, existsSync } from "node:fs";
 import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -78,7 +78,7 @@ function env(...keys) {
 }
 
 function loadMatchesFromDataJs() {
-  const src = readFileSync(resolve(ROOT, "data.js"), "utf8");
+  const src = readFileSync(resolve(ROOT, "public/data.js"), "utf8");
   const window = {};
   // data.js = window.SB = { ... };
   // eslint-disable-next-line no-new-func
@@ -406,7 +406,7 @@ async function main() {
       doUpdate ? " +UPDATE" : ""
     }`
   );
-  console.log(`Source: ${resolve(ROOT, "data.js")}`);
+  console.log(`Source: ${resolve(ROOT, "public/data.js")}`);
   if (wooUrl) console.log(`Woo: ${wooUrl}`);
 
   let attr = { id: 0, slug: ATTR_SLUG, name: ATTR_NAME };
@@ -423,19 +423,8 @@ async function main() {
     results.push(await importGame(game, attr, category.id));
   }
 
-  const ids = results.map((r) => r.id).filter(Boolean);
-  const envOut = resolve(__dirname, "woocommerce-match-ids.env");
-  const idLine = ids.join(",");
-  const lines = [
-    `# Généré par import-matches-to-wordpress.mjs — ${new Date().toISOString()}`,
-    `# Coller dans .env.local (comme FFF) :`,
-    `WC_MATCH_IDS=${idLine}`,
-    `WOOCOMMERCE_MATCH_IDS=${idLine}`,
-    ...results.map((r) => `# ${r.slug}=${r.id ?? "dry-run"}`),
-  ];
-  writeFileSync(envOut, lines.join("\n") + "\n", "utf8");
-  console.log(`\nIDs écrits → ${envOut}`);
-  if (ids.length) console.log(`WC_MATCH_IDS=${idLine}`);
+  console.log("\nProduits WooCommerce :");
+  for (const r of results) console.log(`  ${r.slug}=${r.id ?? "dry-run"}`);
   if (dryRun) {
     console.log("\nRelance avec --apply quand les clés Woo sont prêtes.");
   }

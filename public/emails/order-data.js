@@ -140,7 +140,7 @@ window.LXI_MAIL = (function () {
           section: "118",
           zone: "Lower bowl (100s) · Midfield",
           qty: 2,
-          price: 515,
+          price: 360,
         },
       ],
       total: 1030,

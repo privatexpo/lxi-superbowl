@@ -254,7 +254,7 @@ foreach ($MATCHES as $game) {
 
 if ($ids_out) {
 	WP_CLI::log('');
-	WP_CLI::log('WOOCOMMERCE_MATCH_IDS=' . implode(',', $ids_out));
+	WP_CLI::log('Produits : ' . implode(',', $ids_out));
 }
 if (!$apply) {
 	WP_CLI::log('Relance avec --apply pour créer les produits.');
